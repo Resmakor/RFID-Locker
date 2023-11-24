@@ -9,9 +9,11 @@ LiquidCrystal lcd(8, 7, 5, 4, 3, 2);
 int Contrast = 75;
 String correct_UID = "C925E914";
 
+const int pin = 1;
+
 void setup() {
-	Serial.begin(9600);
 	while (!Serial);		
+  pinMode(pin, OUTPUT);
 	SPI.begin();	
 	mfrc522.PCD_Init();
 	delay(4);
@@ -23,9 +25,18 @@ void setup() {
   lcd.setCursor(0, 1);
   lcd.print("ZBLIZ KARTE");
   delay(4);
+  digitalWrite(pin, HIGH);
+  delay(200);
 }
 
 void loop() {
+  lcd.setCursor(0, 0);
+  lcd.print("ZAMKNIETE");
+  lcd.setCursor(0, 1);
+  lcd.print("ZBLIZ KARTE");
+  delay(200);
+  digitalWrite(pin, HIGH);
+  delay(200);
 	if ( ! mfrc522.PICC_IsNewCardPresent()) {
 		return;
 	}
@@ -39,6 +50,9 @@ void loop() {
   cardUID.toUpperCase();
   if (correct_UID == cardUID)
   {
+    delay(200);
+    digitalWrite(pin, LOW);
+    delay(200);
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("OTWARTE");
@@ -47,6 +61,8 @@ void loop() {
   }
   else
   {
+    digitalWrite(pin, HIGH);
+    delay(200);
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("NIEPOPRAWNA");
@@ -55,9 +71,4 @@ void loop() {
     delay(3000);
     lcd.clear();
   }
-  lcd.setCursor(0, 0);
-  lcd.print("ZAMKNIETE");
-  lcd.setCursor(0, 1);
-  lcd.print("ZBLIZ KARTE");
-  delay(4);
 }
