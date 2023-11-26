@@ -1,15 +1,17 @@
 #include <SPI.h>
 #include <MFRC522.h>
 #include <LiquidCrystal.h> 
+
 #define RST_PIN 9         
 #define SS_PIN 10      
+const int pin = 1;
 
-MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance
+MFRC522 mfrc522(SS_PIN, RST_PIN);
 LiquidCrystal lcd(8, 7, 5, 4, 3, 2);  
 int Contrast = 75;
 String correct_UID = "C925E914";
 
-const int pin = 1;
+
 
 void setup() {
 	while (!Serial);		
